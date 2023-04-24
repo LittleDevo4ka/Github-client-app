@@ -14,6 +14,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        buildConfigField "String", "Client_ID", "\"${properties.getProperty("Client_ID")}\""
+        buildConfigField "String", "Client_secret", "\"${properties.getProperty("Client_secret")}\""
     }
 
     buildTypes {
@@ -28,6 +34,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 }
 
