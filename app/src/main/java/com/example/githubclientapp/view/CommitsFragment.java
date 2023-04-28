@@ -2,6 +2,7 @@ package com.example.githubclientapp.view;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -166,9 +168,8 @@ public class CommitsFragment extends Fragment implements RepositoryRecyclerItem.
                     }
                 });
 
-        binding.swipeRefreshLayoutCommits.setOnRefreshListener(() -> {
-            viewModel.getBranches(viewModel.RepositoryIndex);
-        });
+        binding.swipeRefreshLayoutCommits.setOnRefreshListener(() ->
+                viewModel.getBranches(viewModel.RepositoryIndex));
     }
 
     @Override
@@ -180,4 +181,6 @@ public class CommitsFragment extends Fragment implements RepositoryRecyclerItem.
     public void uploadNextPage() {
         viewModel.uploadNextCommits();
     }
+
+
 }

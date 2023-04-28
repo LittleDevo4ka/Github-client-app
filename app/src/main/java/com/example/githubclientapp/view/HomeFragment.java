@@ -3,6 +3,7 @@ package com.example.githubclientapp.view;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -37,6 +38,7 @@ public class HomeFragment extends Fragment implements RepositoryRecyclerItem.onI
     private FragmentHomeBinding binding;
     private MainViewModel viewModel;
     private NavController navController;
+    private boolean onBackPressed = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -52,6 +54,21 @@ public class HomeFragment extends Fragment implements RepositoryRecyclerItem.onI
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                if (onBackPressed) {
+                    System.exit(0);
+                } else {
+                    Toast.makeText(requireContext(), "Press again to exit",
+                            Toast.LENGTH_SHORT).show();
+                    onBackPressed = true;
+                }
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
         binding.swipeRefreshLayoutHome.setRefreshing(true);
 
         viewModel.stateUserCode.observe(getViewLifecycleOwner(), it -> {

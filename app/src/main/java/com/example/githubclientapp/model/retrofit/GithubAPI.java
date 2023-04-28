@@ -50,6 +50,7 @@ public interface GithubAPI {
     @Headers("Accept: application/vnd.github+json")
     @GET
     Call<List<Branch>> getRepositoryBranches(
+            @Header("Authorization") String authorization_str,
             @Url String url,
             @Query("per_page") Integer pageSize,
             @Query("page") Integer pageNum
@@ -57,11 +58,15 @@ public interface GithubAPI {
 
     @Headers("Accept: application/vnd.github+json")
     @GET
-    Call<List<Commits>> getRepositoryCommits(@Url String url);
+    Call<List<Commits>> getRepositoryCommits(
+            @Header("Authorization") String authorization_str,
+            @Url String url
+    );
 
     @Headers("Accept: application/vnd.github+json")
     @GET
     Call<List<Commits>> getCommitsByBranch(
+            @Header("Authorization") String authorization_str,
             @Url String url,
             @Query("sha") String sha,
             @Query("per_page") Integer pageSize,

@@ -168,9 +168,9 @@ public class GithubAPIService {
 
         String branchesUrl = "https://api.github.com/repos/" + owner + "/" + repositoryName
         + "/branches";
+        String authorizationStr = tokenType + " " + accessToken;
 
-
-        Call<List<Branch>> call = retrofit.getRepositoryBranches(branchesUrl, pageSize, pageNum);
+        Call<List<Branch>> call = retrofit.getRepositoryBranches(authorizationStr, branchesUrl, pageSize, pageNum);
         call.enqueue(new Callback<List<Branch>>() {
             @Override
             public void onResponse(@NonNull Call<List<Branch>> call, @NonNull Response<List<Branch>> response) {
@@ -200,10 +200,11 @@ public class GithubAPIService {
                                      Integer pageSize, Integer pageNum) {
         String commitsUrl = "https://api.github.com/repos/" + owner + "/" + repositoryName
                 + "/commits";
+        String authorizationStr = tokenType + " " + accessToken;
 
         if (branch.isEmpty()) {
 
-            Call<List<Commits>> call = retrofit.getRepositoryCommits(commitsUrl);
+            Call<List<Commits>> call = retrofit.getRepositoryCommits(authorizationStr, commitsUrl);
             call.enqueue(new Callback<List<Commits>>() {
                 @Override
                 public void onResponse(@NonNull Call<List<Commits>> call, @NonNull Response<List<Commits>> response) {
@@ -225,7 +226,7 @@ public class GithubAPIService {
 
         } else {
 
-            Call<List<Commits>> call = retrofit.getCommitsByBranch(commitsUrl, branch, pageSize, pageNum);
+            Call<List<Commits>> call = retrofit.getCommitsByBranch(authorizationStr, commitsUrl, branch, pageSize, pageNum);
             call.enqueue(new Callback<List<Commits>>() {
                 @Override
                 public void onResponse(@NonNull Call<List<Commits>> call, @NonNull Response<List<Commits>> response) {
