@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.githubclientapp.BuildConfig;
 import com.example.githubclientapp.R;
@@ -49,9 +50,17 @@ public class SplashFragment extends Fragment {
 
         navController = Navigation.findNavController(requireView());
 
+        if (viewModel.AccessTokenNotNull()) {
+            viewModel.getUser();
+            viewModel.getRepositories();
+            navController.navigate(R.id.action_splashFragment_to_homeFragment);
+        }
+
         binding.logInButton.setOnClickListener(view1 -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(logInUri));
-            startActivity(intent);
+            if (!viewModel.AccessTokenNotNull()){
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(logInUri));
+                startActivity(intent);
+            }
         });
 
     }
@@ -60,14 +69,16 @@ public class SplashFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (!viewModel.AccessTokenNotNull()) {
 
-        Uri uri = requireActivity().getIntent().getData();
+            Uri uri = requireActivity().getIntent().getData();
 
-        if (uri != null && uri.toString().startsWith(redirectURL)) {
-            String code = uri.getQueryParameter("code");
-            viewModel.getAccessToken(code);
+            if (uri != null && uri.toString().startsWith(redirectURL)) {
+                String code = uri.getQueryParameter("code");
+                viewModel.getAccessToken(code);
 
-            navController.navigate(R.id.action_splashFragment_to_homeFragment);
+                navController.navigate(R.id.action_splashFragment_to_homeFragment);
+            }
         }
     }
 }
